@@ -1,0 +1,797 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Witcher IV - Characters</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            background: #0a0a0a;
+            color: #e6e6e6;
+        }
+        
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('https://cdn-s-thewitcher.cdprojektred.com/media/screenshot/1646/1920x1080/The_Witcher_4_UE5_tech_demo_PS5_Ciri_1_EN_q70_1920x1080.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            color: white;
+        }
+        
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+            max-width: 900px;
+            padding: 0 20px;
+            animation: fadeInUp 1.5s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            font-family: 'Cinzel', serif;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            background: linear-gradient(135deg, #ffffff, #cccccc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: rgb(255, 255, 255);
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            font-family: 'Cinzel', serif;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+            opacity: 0.9;
+        }
+        
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 20px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .nav.scrolled {
+            background: rgba(0,0,0,0.8);
+            padding: 15px 0;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            text-decoration: none;
+        }
+
+        .logo-img {
+            height: 50px; 
+            width: auto;   
+            filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.5));
+            transition: all 0.3s ease;
+        }
+
+        .logo-img:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.7));
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-family: 'Cinzel', serif;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #2d5a87, #37546c);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+        
+        .nav-menu a:hover {
+            color: #e6f3ff;
+        }
+
+        .nav-menu a.active {
+            color: #37546c;
+        }
+
+        .nav-menu a.active::after {
+            width: 100%;
+        }
+        
+        .characters-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 80px 20px;
+            background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
+            min-height: 100vh;
+        }
+        
+        .characters-section {
+            margin-bottom: 80px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideInUp 0.8s ease-out forwards;
+        }
+        
+        .characters-section:nth-child(2) { animation-delay: 0.2s; }
+        .characters-section:nth-child(3) { animation-delay: 0.4s; }
+        .characters-section:nth-child(4) { animation-delay: 0.6s; }
+        .characters-section:nth-child(5) { animation-delay: 0.8s; }
+        
+        @keyframes slideInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .characters-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+            font-family: 'Cinzel', serif;
+            color: #00f7ff;
+            text-align: center;
+            position: relative;
+        }
+        
+        .characters-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(135deg, #570202, #157986);
+            border-radius: 2px;
+        }
+        
+        .characters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+        
+        .character-card {
+            background: linear-gradient(135deg, rgba(55, 84, 108, 0.1), rgba(87, 2, 2, 0.1));
+            border-radius: 15px;
+            padding: 0;
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            height: 500px;
+        }
+        
+        .character-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.6s ease;
+            z-index: 1;
+        }
+        
+        .character-card:hover::before {
+            left: 100%;
+        }
+        
+        .character-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            border-color: rgba(55, 84, 108, 0.5);
+        }
+        
+        .character-image {
+            width: 100%;
+            height: 250px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+            border-radius: 15px 15px 0 0;
+        }
+        
+        .character-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            padding: 30px 20px 20px;
+            border-radius: 0 0 15px 15px;
+        }
+        
+        .character-info {
+            padding: 30px;
+            z-index: 2;
+            position: relative;
+        }
+        
+        .character-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            font-family: 'Cinzel', serif;
+            color: #00f7ff;
+        }
+        
+        .character-role {
+            font-size: 1rem;
+            color: #ff6b6b;
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-family: 'Cinzel', serif;
+        }
+        
+        .character-info p {
+            color: #b3b3b3;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        .character-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .stat-item {
+            background: rgba(0,0,0,0.3);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .stat-label {
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 5px;
+        }
+        
+        .stat-value {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #37546c;
+            font-family: 'Cinzel', serif;
+        }
+        
+        .quote-section {
+            background: linear-gradient(135deg, rgba(55, 84, 108, 0.2), rgba(87, 2, 2, 0.2));
+            border-left: 4px solid #37546c;
+            padding: 40px;
+            margin: 60px 0;
+            border-radius: 0 15px 15px 0;
+            position: relative;
+        }
+        
+        .quote-section::before {
+            content: '"';
+            font-size: 4rem;
+            color: #37546c;
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            font-family: 'Cinzel', serif;
+        }
+        
+        .quote-section p {
+            font-size: 1.3rem;
+            font-style: italic;
+            color: #e6e6e6;
+            margin-bottom: 20px;
+            padding-left: 40px;
+        }
+        
+        .quote-author {
+            text-align: right;
+            color: #37546c;
+            font-weight: 600;
+            font-family: 'Cinzel', serif;
+        }
+        
+        .back-button {
+            display: block;
+            margin: 40px auto 0 auto;
+            text-align: center;
+            width: fit-content;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #000000, #000000);
+            color: rgb(0, 247, 255);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+        
+        .back-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.4);
+            background: linear-gradient(135deg, #37546c, #2d5a87);
+        }
+        
+        .side-nav-toggle {
+            display: none;
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .side-nav {
+            display: none;
+            position: fixed;
+            top: 70px;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            width: 200px;
+            height: calc(100% - 70px);
+            flex-direction: column;
+            padding: 1rem;
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .side-nav.active {
+            display: flex;
+        }
+
+        .side-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .side-nav li {
+            margin-bottom: 10px;
+        }
+
+        .side-nav a {
+            color: #026f77;
+            padding: 0.7rem 1rem;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            font-family: 'Cinzel', serif;
+            border-radius: 6px;
+            transition: background-color 0.3s, color 0.3s;
+            display: block;
+        }
+
+        .side-nav a:hover,
+        .side-nav a.active {
+            background-color: #fff;
+            color: #046d38;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .nav-menu {
+                display: none;
+            }
+            
+            .side-nav-toggle {
+                display: block;
+            }
+            
+            .characters-content {
+                padding: 60px 15px;
+            }
+            
+            .characters-section h2 {
+                font-size: 2rem;
+            }
+            
+            .characters-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .character-card {
+                height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <img src="https://www.thewitcher.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo-top-en.3012c246.png&w=3840&q=75" alt="The Witcher IV" class="logo-img">
+            </a>
+            <ul class="nav-menu" style="font-family: Cinzel, sans-serif;">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="story.html">Story</a></li>
+                <li><a href="#characters" class="active">Characters</a></li>
+                <li><a href="world.html">World</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+            <button class="side-nav-toggle" onclick="toggleSideNav()">☰</button>
+        </div>
+    </nav>
+    
+    <div class="side-nav" id="sideNav">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="story.html">Story</a></li>
+            <li><a href="#characters" class="active">Characters</a></li>
+            <li><a href="world.html">World</a></li>
+            <li><a href="about.html">About</a></li>
+        </ul>
+    </div>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Meet the Characters</h1>
+            <p>Discover the heroes, villains, and legends that shape the world of The Witcher IV</p>
+        </div>
+    </section>
+
+    <div class="characters-content">
+        <div class="characters-section">
+            <h2>New Heroes</h2>
+            <div class="characters-grid">
+                <div class="character-card">
+                    <div class="character-image" style="background-image: url('https://cdn-s-thewitcher.cdprojektred.com/media/screenshot/1649/1920x1080/The_Witcher_4_UE5_tech_demo_PS5_Ciri_2_EN_q70_1920x1080.jpeg');">
+                        <div class="character-overlay">
+                            <h3>Ciri</h3>
+                            <div class="character-role">The Lion Cub of Cintra</div>
+                        </div>
+                    </div>
+                    <div class="character-info">
+                        <p>Now a seasoned witcher, Ciri has mastered both her Elder Blood abilities and traditional witcher skills. She faces new challenges as reality itself begins to fracture.</p>
+                        <div class="character-stats">
+                            <div class="stat-item">
+                                <div class="stat-label">School</div>
+                                <div class="stat-value">Wolf</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">Specialty</div>
+                                <div class="stat-value">Elder Blood</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="character-card">
+                    <div class="character-image" style="background-image: url('https://www.thewitcher.com/_next/image?url=https%3A%2F%2Fstatic.cdprojektred.com%2Fthewitcher.com%2Fmedia%2Fscreenshots%2Fwitcher3%2Ffull%2Fwitcher3_en_screenshot_screenshot_30_1920x1080_1433341636.png&w=1920&q=75');">
+                        <div class="character-overlay">
+                            <h3>Geralt of Rivia</h3>
+                            <div class="character-role">The White Wolf</div>
+                        </div>
+                    </div>
+                    <div class="character-info">
+                        <p>Geralt of Rivia was a legendary witcher of the School of the Wolf active throughout the 13th century, and became Ciri's adoptive father.</p>
+                        <div class="character-stats">
+                            <div class="stat-item">
+                                <div class="stat-label">School</div>
+                                <div class="stat-value">Wolf</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">Specialty</div>
+                                <div class="stat-value">Signs</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="character-card">
+                    <div class="character-image" style="background-image: url('https://c4.wallpaperflare.com/wallpaper/147/440/895/yennefer-of-vengerberg-render-video-games-the-witcher-3-wild-hunt-fantasy-girl-wallpaper-preview.jpg');">
+                        <div class="character-overlay">
+                            <h3>Yennefer</h3>
+                            <div class="character-role">Sorceress of Vengerberg</div>
+                        </div>
+                    </div>
+                    <div class="character-info">
+                        <p>The powerful sorceress returns with deeper knowledge of chaos magic and interdimensional travel. Her research into the Elder Blood proves crucial to understanding the new threats.</p>
+                        <div class="character-stats">
+                            <div class="stat-item">
+                                <div class="stat-label">Affiliation</div>
+                                <div class="stat-value">Lodge</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">Specialty</div>
+                                <div class="stat-value">Chaos Magic</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="quote-section">
+            <p>The path forward is shrouded in darkness, but we are not the same people who once trembled before the unknown. We are witchers, sorceresses, and warriors. We face the abyss together.</p>
+            <div class="quote-author">— Ciri</div>
+        </div>
+
+        <div class="characters-section">
+            <h2>Returning Allies</h2>
+            <div class="characters-grid">
+                <div class="character-card">
+                    <div class="character-image" style="background-image: url('https://i.pinimg.com/736x/b0/13/a3/b013a349caa6b38c38776cfb93a3e4ae.jpg');">
+                        <div class="character-overlay">
+                            <h3>Triss Merigold</h3>
+                            <div class="character-role">Advisor of Kovir</div>
+                        </div>
+                    </div>
+                    <div class="character-info">
+                        <p>Now serving as a royal advisor, Triss has gained political influence while maintaining her magical prowess. She provides crucial intelligence about the growing supernatural threats.</p>
+                        <div class="character-stats">
+                            <div class="stat-item">
+                                <div class="stat-label">Position</div>
+                                <div class="stat-value">Royal Advisor</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">Specialty</div>
+                                <div class="stat-value">Healing Magic</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="character-card">
+                    <div class="character-image" style="background-image: url('https://i.redd.it/gcgwyx3wvnk71.jpg');">
+                        <div class="character-overlay">
+                            <h3>Dandelion</h3>
+                            <div class="character-role">The Chronicler</div>
+                        </div>
+                    </div>
+                    <div class="character-info">
+                        <p>The famous bard continues to document the adventures of witchers, though his tales now carry warnings of dangers that threaten all of civilization.</p>
+                        <div class="character-stats">
+                            <div class="stat-item">
+                                <div class="stat-label">Profession</div>
+                                <div class="stat-value">Bard</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">Specialty</div>
+                                <div class="stat-value">Lore</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="character-card">
+                    <div class="character-image" style="background-image: url('https://e1.pxfuel.com/desktop-wallpaper/269/282/desktop-wallpaper-netflix-s-the-witcher-nightmare-of-the-wolf-anime-will-focus-on-geralt-s-mentor-vesemir.jpg');">
+                        <div class="character-overlay">
+                            <h3>Vesemir's Spirit</h3>
+                            <div class="character-role">The Eternal Mentor</div>
+                        </div>
+                    </div>
+                    <div class="character-info">
+                        <p>Though fallen in battle, Vesemir's spirit guides the new generation of witchers through the Elder Blood's connection to other realms. His wisdom transcends death itself.</p>
+                        <div class="character-stats">
+                            <div class="stat-item">
+                                <div class="stat-label">Form</div>
+                                <div class="stat-value">Spirit Guide</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">Legacy</div>
+                                <div class="stat-value">Wolf School</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="characters-section">
+            <h2>New Threats</h2>
+            <div class="characters-grid">
+                <div class="character-card">
+                    <div class="character-image" style="background-image: url('https://preview.redd.it/no-matter-where-witcher-4-is-set-i-just-want-to-finally-be-v0-og81c97pybvd1.jpeg?width=640&crop=smart&auto=webp&s=b4382a5cfd293a7901bb7ee5140be14af28dd8e2');">
+                        <div class="character-overlay">
+                            <h3>The Manticore</h3>
+                            <div class="character-role">The Beast</div>
+                        </div>
+                    </div>
+                    <div class="character-info">
+                        <p>A giant beast with the body of a lion, bat wings, and scorpion tail. They are said to somehow use the lethal poison of the Bohun Upas in their stinger, and have an appetite that allows them to eat as many as 20 people per moon.</p>
+                        <div class="character-stats">
+                            <div class="stat-item">
+                                <div class="stat-label">Origin</div>
+                                <div class="stat-value">Mountains</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">Threat Level</div>
+                                <div class="stat-value">Destructive</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="character-card">
+                    <div class="character-image" style="background-image: url('https://i.redd.it/tried-my-best-to-gather-stills-of-the-bauk-not-the-best-v0-9ca6jdrbuv6e1.png?width=1920&format=png&auto=webp&s=60d2f1fbbe83ffa3ec6dee6243c35d38c8b653bb');">
+                        <div class="character-overlay">
+                            <h3>The Bauk</h3>
+                            <div class="character-role">The Fallen Sorceress</div>
+                        </div>
+                    </div>
+                    <div class="character-info">
+                        <p>A monster characterized by its six arms and the ability to perfectly mimic the voices and sounds of other beings. </p>
+                        <div class="character-stats">
+                            <div class="stat-item">
+                                <div class="stat-label">Origin</div>
+                                <div class="stat-value">Unknown</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">Powers</div>
+                                <div class="stat-value">Mimicry</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="character-card">
+                    <div class="character-image" style="background-image: url('https://monsterhunterworld.wiki.fextralife.com/file/Monster-Hunter-World/ancient_leshen_mhw.png');">
+                        <div class="character-overlay">
+                            <h3>Leshen</h3>
+                            <div class="character-role">Entity of the woods</div>
+                        </div>
+                    </div>
+                    <div class="character-info">
+                        <p>Are ancient and powerful forest spirits. Possessing a deer skull as a head and tree-like limbs, a leshen can call for aid from crows or a pack of wolves.</p>
+                        <div class="character-stats">
+                            <div class="stat-item">
+                                <div class="stat-label">Class</div>
+                                <div class="stat-value">Relict</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">Power</div>
+                                <div class="stat-value">Control and Summon</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="characters-section">
+            <a href="index.html" class="back-button">Return to Homepage</a>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            if (hero) {
+                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+        
+        function toggleSideNav() {
+            const nav = document.getElementById('sideNav');
+            nav.classList.toggle('active');
+        }
+
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.characters-section').forEach(section => {
+            observer.observe(section);
+        });
+
+        document.querySelectorAll('.character-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,620 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Witcher IV - Story</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            background: #0a0a0a;
+            color: #e6e6e6;
+        }
+        
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('https://cdn-s-thewitcher.cdprojektred.com/media/wallpaper/1459/1920x1080/Wallpapers_for_Polaris_7_1920x1080_EN_q70_1920x1080.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            color: white;
+        }
+        
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+            max-width: 900px;
+            padding: 0 20px;
+            animation: fadeInUp 1.5s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            font-family: 'Cinzel', serif;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            background: linear-gradient(135deg, #ffffff, #cccccc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: rgb(255, 255, 255);
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            font-family: 'Cinzel', serif;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+            opacity: 0.9;
+        }
+        
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 20px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .nav.scrolled {
+            background: rgba(0,0,0,0.8);
+            padding: 15px 0;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            text-decoration: none;
+        }
+
+        .logo-img {
+            height: 50px; 
+            width: auto;   
+            filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.5));
+            transition: all 0.3s ease;
+        }
+
+        .logo-img:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.7));
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-family: 'Cinzel', serif;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #2d5a87, #37546c);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+        
+        .nav-menu a:hover {
+            color: #e6f3ff;
+        }
+
+        .nav-menu a.active {
+            color: #37546c;
+        }
+
+        .nav-menu a.active::after {
+            width: 100%;
+        }
+        
+        .side-nav-toggle {
+            display: none;
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 1001;
+            
+        }
+
+        .side-nav {
+            display: none;
+            position: fixed;
+            top: 70px;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            width: 200px;
+            height: calc(100% - 70px);
+            flex-direction: column;
+            padding: 1rem;
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .side-nav.active {
+            display: flex;
+        }
+
+        .side-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .side-nav li {
+            margin-bottom: 10px;
+        }
+
+        .side-nav a {
+            color: #026f77;
+            padding: 0.7rem 1rem;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            font-family: 'Cinzel', serif;
+            border-radius: 6px;
+            transition: background-color 0.3s, color 0.3s;
+            display: block;
+        }
+
+        .side-nav a:hover,
+        .side-nav a.active {
+            background-color: #fff;
+            color: #046d38;
+        }
+        
+        .story-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 20px;
+            background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
+            min-height: 100vh;
+        }
+        
+        .story-section {
+            margin-bottom: 80px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideInUp 0.8s ease-out forwards;
+        }
+        
+        .story-section:nth-child(2) { animation-delay: 0.2s; }
+        .story-section:nth-child(3) { animation-delay: 0.4s; }
+        .story-section:nth-child(4) { animation-delay: 0.6s; }
+        .story-section:nth-child(5) { animation-delay: 0.8s; }
+        
+        @keyframes slideInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .story-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            font-family: 'Cinzel', serif;
+            color: #00f7ff;
+            text-align: center;
+            position: relative;
+        }
+        
+        .story-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(135deg, #570202, #157986);
+            border-radius: 2px;
+        }
+        
+        .story-section p {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            text-align: justify;
+            line-height: 1.8;
+            color: #cccccc;
+        }
+        
+        .story-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+        
+        .story-card {
+            background: linear-gradient(135deg, rgba(55, 84, 108, 0.1), rgba(87, 2, 2, 0.1));
+            border-radius: 15px;
+            padding: 0;
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            height: 400px;
+        }
+        
+        .story-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.6s ease;
+            z-index: 1;
+        }
+        
+        .story-card:hover::before {
+            left: 100%;
+        }
+        
+        .story-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            border-color: rgba(55, 84, 108, 0.5);
+        }
+        
+        .story-image {
+            width: 100%;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 15px 15px 0 0;
+            position: relative;
+        }
+        
+        .story-image::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.6));
+        }
+        
+        .story-card-content {
+            padding: 30px;
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            z-index: 2;
+            position: relative;
+        }
+        
+        .story-card-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            font-family: 'Cinzel', serif;
+            color: #00f7ff;
+        }
+        
+        .story-card-content p {
+            color: #b3b3b3;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        
+        .back-button {
+                display: block;
+                margin: 40px auto 0 auto;
+                text-align: center;
+                width: fit-content;
+                padding: 15px 40px;
+                background: linear-gradient(135deg, #000000, #000000);
+                color: rgb(0, 247, 255);
+                text-decoration: none;
+                border-radius: 50px;
+                font-weight: 600;
+                font-family: 'Cinzel', serif;
+                font-size: 1.1rem;
+                transition: all 0.3s ease;
+                box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+                border: 2px solid rgba(255,255,255,0.2);
+        }
+        
+        .back-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.4);
+            background: linear-gradient(135deg, #37546c, #2d5a87);
+        }
+        
+        .quote-section {
+            background: linear-gradient(135deg, rgba(55, 84, 108, 0.2), rgba(87, 2, 2, 0.2));
+            border-left: 4px solid #37546c;
+            padding: 40px;
+            margin: 60px 0;
+            border-radius: 0 15px 15px 0;
+            position: relative;
+        }
+        
+        .quote-section::before {
+            content: '"';
+            font-size: 4rem;
+            color: #37546c;
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            font-family: 'Cinzel', serif;
+        }
+        
+        .quote-section p {
+            font-size: 1.3rem;
+            font-style: italic;
+            color: #e6e6e6;
+            margin-bottom: 20px;
+            padding-left: 40px;
+        }
+        
+        .quote-author {
+            text-align: right;
+            color: #37546c;
+            font-weight: 600;
+            font-family: 'Cinzel', serif;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .nav-menu {
+                display: none;
+            }
+            
+            .side-nav-toggle {
+                display: block;
+            }
+            
+            .story-content {
+                padding: 60px 15px;
+            }
+            
+            .story-section h2 {
+                font-size: 2rem;
+            }
+            
+            .story-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .story-card {
+                height: auto;
+            }
+            
+            .story-card-content {
+                height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <img src="https://www.thewitcher.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo-top-en.3012c246.png&w=3840&q=75" alt="The Witcher IV" class="logo-img">
+            </a>
+            <ul class="nav-menu" style="font-family: Cinzel, sans-serif;">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="story.html" class="active">Story</a></li>
+                <li><a href="characters.html">Characters</a></li>
+                <li><a href="world.html">World</a></li>
+                <li><a href="about.html">About</a></li>
+                
+            </ul>
+            <button class="side-nav-toggle" onclick="toggleSideNav()">☰</button>
+        </div>
+    </nav>
+    
+    <div class="side-nav" id="sideNav">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="story.html" class="active">Story</a></li>
+            <li><a href="characters.html">Characters</a></li>
+            <li><a href="world.html">World</a></li>
+            <li><a href="about.html">About</a></li>
+        </ul>
+    </div>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>The Story Unfolds</h1>
+            <p>Discover the epic tale that awaits in The Witcher IV</p>
+        </div>
+    </section>
+
+    <div class="story-content">
+        <div class="story-section">
+            <h2>A New Chapter Begins</h2>
+            <p>Years have passed since the events of The Witcher 3: Wild Hunt. The Northern Kingdoms are slowly recovering from the devastation of war, but new threats emerge from the shadows. Ancient prophecies speak of a coming darkness that will test the very fabric of reality itself.</p>
+            <p>In this new adventure, players will embark on a journey that spans multiple realms, where the choices made will determine not just the fate of individuals, but the destiny of entire civilizations. The School of the Wolf may be nearly extinct, but the legacy of the witchers lives on through those brave enough to take up the mantle.</p>
+        </div>
+
+        <div class="quote-section">
+            <p>The path of a witcher is never easy. We walk between worlds, neither fully human nor monster, carrying the burden of choices that others cannot make.</p>
+            <div class="quote-author">— Master Vesemir</div>
+        </div>
+
+        <div class="story-section">
+            <h2>The Convergence</h2>
+            <p>Strange phenomena have begun manifesting across the Continent. The barriers between worlds grow thin, and creatures from other dimensions seep through the cracks in reality. These are not mere monsters to be hunted they are harbingers of something far more sinister.</p>
+            <p>The Conjunction of the Spheres, the cataclysmic event that brought monsters to this world over a millennium ago, may be happening again. But this time, the stakes are higher, and the consequences more dire than ever before.</p>
+        </div>
+
+        <div class="story-section">
+            <h2>Key Story Elements</h2>
+            <div class="story-grid">
+                <div class="story-card">
+                    <div class="story-image" style="background-image: url('https://static1.thegamerimages.com/wordpress/wp-content/uploads/2022/01/Witcher-3-Ciri-Scream.jpg');"></div>
+                    <div class="story-card-content">
+                        <h3>The Elder Blood</h3>
+                        <p>The power of the Elder Blood continues to shape destiny. New bearers of this ancient gift must learn to control abilities that could either save or destroy the world.</p>
+                    </div>
+                </div>
+                <div class="story-card">
+                    <div class="story-image" style="background-image: url('https://static0.gamerantimages.com/wordpress/wp-content/uploads/2021/03/witcher-wild-hunt-helmet.jpg');"></div>
+                    <div class="story-card-content">
+                        <h3>The Wild Hunt's Legacy</h3>
+                        <p>Though defeated, the Wild Hunt's influence lingers. Their knowledge of interdimensional travel has opened doorways that should remain sealed.</p>
+                    </div>
+                </div>
+                <div class="story-card">
+                    <div class="story-image" style="background-image: url('https://static0.gamerantimages.com/wordpress/wp-content/uploads/2019/12/witcher-schools.jpg');"></div>
+                    <div class="story-card-content">
+                        <h3>The Last Schools</h3>
+                        <p>The few remaining witcher schools must unite in the face of this new threat. Old rivalries must be set aside to preserve what remains of their ancient traditions.</p>
+                    </div>
+                </div>
+                <div class="story-card">
+                    <div class="story-image" style="background-image: url('https://static1.thegamerimages.com/wordpress/wp-content/uploads/2023/11/9-the-witcher-3-every-kingdom-ruler-ending-and-how-to-get-them.jpg?q=70&fit=contain&w=1200&h=628&dpr=1');"></div>
+                    <div class="story-card-content">
+                        <h3>Political Intrigue</h3>
+                        <p>As supernatural threats grow, political powers vie for control. Kings and sorceresses play dangerous games while the world burns around them.</p>
+                    </div>
+                </div>
+                <div class="story-card">
+                    <div class="story-image" style="background-image: url('https://sm.ign.com/ign_nordic/feature/t/the-witche/the-witcher-4-12-vital-trailer-details-revealed-by-cd-projek_mmy8.jpg');"></div>
+                    <div class="story-card-content">
+                        <h3>Zirael's story</h3>
+                        <p>The Witcher 4 follows Ciri as she begins her journey to become a Witcher, carving her own path after the events of The Witcher 3.</p>
+                    </div>
+                </div>
+                <div class="story-card">
+                    <div class="story-image" style="background-image: url('https://preview.redd.it/the-witcher-4-is-set-in-kovir-v0-wq0mh15evp4f1.jpeg?auto=webp&s=18c4d22a9514a14dcd67492f51d7ff200fe12515');"></div>
+                    <div class="story-card-content">
+                        <h3>Explore a new world</h3>
+                        <p>Taking place in Kovir, a wealthy northern kingdom never before explored in the games. This new setting offers fresh action for worthy witchers.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="story-section">
+            <h2>Your Journey Awaits</h2>
+            <p>In The Witcher IV, you will forge your own path through this rich and complex narrative. Every decision carries weight, every alliance has consequences, and every victory comes at a price. The story adapts to your choices, creating a unique experience that reflects your moral compass and strategic thinking.</p>
+            <p>Whether you choose to walk the path of the traditional witcher, embrace new magical abilities, or forge alliances with unlikely companions, your journey will be one of discovery, sacrifice, and ultimately, heroism in the face of impossible odds.</p>
+            
+            <a href="index.html" class="back-button">Return to Homepage</a>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            if (hero) {
+                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.story-section').forEach(section => {
+            observer.observe(section);
+        });
+        
+        function toggleSideNav() {
+            const nav = document.getElementById('sideNav');
+            nav.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
