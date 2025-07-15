@@ -229,38 +229,6 @@
             100% { transform: rotate(360deg); }
         }
         
-        .demo-credentials {
-            background: rgba(55, 84, 108, 0.1);
-            border: 1px solid rgba(55, 84, 108, 0.3);
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-        
-        .demo-credentials h3 {
-            color: #37546c;
-            margin-bottom: 15px;
-            font-family: 'Cinzel', serif;
-            font-size: 1.1rem;
-        }
-        
-        .demo-credentials p {
-            color: #cccccc;
-            font-size: 0.9rem;
-            margin-bottom: 5px;
-        }
-        
-        .demo-credentials .credential {
-            font-family: monospace;
-            color: #ffffff;
-            background: rgba(255,255,255,0.1);
-            padding: 5px 10px;
-            border-radius: 5px;
-            display: inline-block;
-            margin: 2px;
-        }
-        
         .particles {
             position: absolute;
             top: 0;
@@ -313,12 +281,6 @@
             <h1 class="login-title">Welcome Back</h1>
             <p class="login-subtitle">Enter the world of The Witcher IV</p>
             
-            <div class="demo-credentials">
-                <h3>Demo Credentials</h3>
-                <p>Username: <span class="credential">geralt</span></p>
-                <p>Password: <span class="credential">witcher123</span></p>
-            </div>
-            
             <div class="error-message" id="errorMessage"></div>
             <div class="success-message" id="successMessage"></div>
             
@@ -340,7 +302,7 @@
                 <div class="loading-spinner" id="loadingSpinner"></div>
                 
                 <div class="forgot-password">
-                    <a href="#">Forgot your password?</a>
+                    <a href="#" onclick="showForgotPassword()">Forgot your password?</a>
                 </div>
             </form>
         </div>
@@ -370,14 +332,6 @@
         const successMessage = document.getElementById('successMessage');
         const usernameInput = document.getElementById('username');
         const passwordInput = document.getElementById('password');
-
-        const validCredentials = {
-            'geralt': 'witcher123',
-            'ciri': 'elderblood',
-            'yennefer': 'magic123',
-            'triss': 'sorceress',
-            'admin': 'admin123'
-        };
 
         function showError(message) {
             errorMessage.textContent = message;
@@ -409,24 +363,26 @@
         }
 
         function authenticateUser(username, password) {
-            return new Promise((resolve, reject) => {
+            return new Promise((resolve) => {
                 setTimeout(() => {
-                    if (validCredentials[username] && validCredentials[username] === password) {
+                    if (username.trim() && password.trim()) {
                         resolve({ success: true, user: username });
                     } else {
-                        reject(new Error('Invalid username or password'));
+                        resolve({ success: false, error: 'Please enter both username and password' });
                     }
-                }, 1500);
+                }, 800);
             });
         }
 
         function redirectToHomepage() {
-            const homepageHTML = homepage.html
-
-            document.open();
-            document.write(homepageHTML);
-            document.close();
+            window.location.href = 'index.html';
         }
+
+        function showForgotPassword() {
+            alert('Password recovery feature coming soon! For now, any username and password will work.');
+        }
+
+        let currentUser = '';
 
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -441,34 +397,33 @@
             }
             
             setLoading(true);
+            currentUser = username;
             
             try {
                 const result = await authenticateUser(username, password);
                 
                 if (result.success) {
-                    sessionStorage.setItem('authenticated', 'true');
-                    sessionStorage.setItem('username', result.user);
+                    showSuccess(`Welcome back, ${username}! Redirecting to homepage...`);
                     
-                    showSuccess('Login successful! Redirecting...');
+                    sessionStorage.setItem('currentUser', username);
                     
                     setTimeout(() => {
-                        window.location.href = 'index.html';
-                    }, 1000);
+                        redirectToHomepage();
+                    }, 1500);
+                } else {
+                    showError(result.error);
                 }
             } catch (error) {
-                showError(error.message);
+                showError('An error occurred. Please try again.');
             } finally {
                 setLoading(false);
             }
         });
 
-        if (sessionStorage.getItem('authenticated') === 'true') {
-            window.location.href = 'homepage.html';
-        }
-
         usernameInput.addEventListener('input', hideMessages);
         passwordInput.addEventListener('input', hideMessages);
 
+        
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' && !loginButton.disabled) {
                 loginForm.dispatchEvent(new Event('submit'));
@@ -476,6 +431,17 @@
         });
 
         usernameInput.focus();
+
+        function validateInput(input) {
+            if (input.value.trim()) {
+                input.style.borderColor = 'rgba(0, 255, 0, 0.5)';
+            } else {
+                input.style.borderColor = 'rgba(255,255,255,0.2)';
+            }
+        }
+
+        usernameInput.addEventListener('blur', () => validateInput(usernameInput));
+        passwordInput.addEventListener('blur', () => validateInput(passwordInput));
     </script>
 </body>
 </html>
